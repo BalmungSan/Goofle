@@ -11,7 +11,8 @@ class Searcher:
     self.vowels = {"á":"a", "à":"a", "â":"a", "ä":"a", "é":"e",
                    "è":"e", "ê":"e", "ë":"e", "í":"i", "ì":"i",
                    "î":"i", "ï":"i", "ó":"o", "ò":"o", "ô":"o",
-                   "ö":"o", "ú":"u", "ù":"u", "û":"u", "ü":"u"}
+                   "ö":"o", "ú":"u", "ù":"u", "û":"u", "ü":"u",
+                   "ñ":"n"}
   
   def search (self, words, top):
     result = defaultdict(lambda:0)
@@ -21,7 +22,7 @@ class Searcher:
         word = word.replace(v, c)
       files = self.goofle.find_one({"word": word}, {"_id": False, "files": True})
       if files is None:
-        return False
+        continue
       for _file in files["files"]:
         file, count = _file.values()
         result[file] += count
