@@ -79,7 +79,7 @@ object InvIndex {
 
     //counts the words
     val counts = words groupBy (w => w) mapValues (_.size)
-    counts.seq.toSeq
+    counts.toSeq.seq
   }
 
   /** ===Main method===
@@ -87,16 +87,16 @@ object InvIndex {
    * @param args command line arguments
    */
   def main(args: Array[String]): Unit = {
-    //start the application
+    //starts the application
     val spark = SparkSession.builder()
       .appName("InvertedIndex")
       .getOrCreate()
     val sc = spark.sparkContext
 
-    //open all files specified in the first argument	
+    //opens all files specified in the first argument	
     val files = sc.wholeTextFiles(args(0))
 
-    //create an inverted index for those files
+    //creates an inverted index for those files
     val wordsPerFile = files map {
       case (file, text) =>
         (file.substring(file.lastIndexOf("/", file.lastIndexOf("/") - 1)),
@@ -106,7 +106,7 @@ object InvIndex {
       case(file, words) => words map { case (word, count) => (word, (file, count)) }
     } groupByKey() map { case(word, files) => (word, files.toSeq.sortWith(_._2 > _._2)) }
 
-    //save the inverted in mongo using the property 'spark.mongodb.output.uri'
+    //saves the inverted in mongo using the property 'spark.mongodb.output.uri'
     val mongoRDD = filesPerWord map { case (word, values) =>
       val files = for {
         (name, count) <- values
@@ -115,7 +115,7 @@ object InvIndex {
     } map { new org.bson.Document(_) }
     MongoSpark.save(mongoRDD)
  
-    //stop the application
+    //stops the application
     sc.stop()
   }
 }
