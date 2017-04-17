@@ -1,6 +1,7 @@
 # InvIndex
 ## Spark application to create the inverted index of a group of files
 ### Author: Luis Miguel Mejía Suárez (BalmungSan)
+### Versión: 1.1.0 (17/04/2017)
 
 Spark Application to compute the inverted index of a bunch of files in HDFS and saves the results in a mongo collection
 
@@ -29,7 +30,7 @@ Run
     $ spark-submit --master yarn --deploy-mode cluster \
       --conf "spark.mongodb.output.uri=[mongo uri]" \
       --class "goofle.invindex.InvIndex" \
-      target/scala-2.11/invindex_2.11-1.0.0.jar \
+      target/scala-2.11/invindex_2.11-1.1.0.jar \
       [path]
 
 **Where:**
@@ -50,7 +51,6 @@ Either these are installed in the cluster in a path where Spark can load them or
 	```--packages org.mongodb.spark:mongo-spark-connector_2.11:2.0.0```
 
 ### Notes
-- **For the moment:** only empty words are ignored.
-	+ **Future work:** Ignore spanish and english [stop words](https://en.wikipedia.org/wiki/Stop_words).
+- Spanish and english [stop words](https://en.wikipedia.org/wiki/Stop_words) are ignored.
 - **For the moment:** the _inflected_ form of a word means, all characters in lowercase and all diacritic vowel are mapped to its normal form. _e.g. Á => a_
 	+ **Future work:** Compute and save the [word stem] (https://en.wikipedia.org/wiki/Word_stem) of each word.

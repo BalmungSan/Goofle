@@ -1,5 +1,5 @@
 name         := "InvIndex"
-version      := "1.0.0"
+version      := "1.1.0"
 organization := "goofle"
 
 scalaVersion := "2.11.8"

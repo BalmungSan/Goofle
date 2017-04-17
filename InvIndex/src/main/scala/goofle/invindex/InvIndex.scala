@@ -30,7 +30,7 @@ import com.mongodb.spark.MongoSpark
  * the word appeared in that document
  *
  * @author Luis Miguel Mejía Suárez (BalmungSan) 
- * @version 1.0.0
+ * @version 1.1.0
  */
 object InvIndex {
   /** Count all words in a text
@@ -39,9 +39,21 @@ object InvIndex {
    * @note this method runs in parallel 
    */
   private def countWords(text: String): Seq[(String, Int)] = {
+    //creates the set of stop words
+    import scala.io.Source
+    val englishStopWordsStream = getClass.getResourceAsStream("/english-stop-words")
+    val spanishStopWordsStream = getClass.getResourceAsStream("/spanish-stop-words")
+    val englishStopWordsSource = Source.fromInputStream(englishStopWordsStream)
+    val spanishStopWordsSource = Source.fromInputStream(spanishStopWordsStream)
+    val englishStopWordsSet = englishStopWordsSource.mkString.split(",").toSet
+    val spanishStopWordsSet = spanishStopWordsSource.mkString.split(",").toSet
+    val stopWords = englishStopWordsSet | spanishStopWordsSet
+    englishStopWordsSource.close()
+    spanishStopWordsSource.close()
+
     //checks if a word is valid
     def isValidWord(word: String): Boolean = {
-      word != ""
+      word != "" && !stopWords(word)
     }
 
     //returns the inflected form of a word
