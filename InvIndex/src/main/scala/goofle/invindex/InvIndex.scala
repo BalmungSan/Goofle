@@ -30,7 +30,7 @@ import com.mongodb.spark.MongoSpark
  * the word appeared in that document
  *
  * @author Luis Miguel Mejía Suárez (BalmungSan) 
- * @version 1.1.0
+ * @version 1.1.1
  */
 object InvIndex {
   /** Count all words in a text
@@ -86,8 +86,9 @@ object InvIndex {
     //gets all words in the text in parallel
     val words = for {
       w <- text.split("[^A-Za-z]").par //splits by every character that isn't a letter
-      if isValidWord(w)
-    } yield toInflectedForm(w)
+      word = toInflectedForm(w)
+      if isValidWord(word)
+    } yield word
 
     //counts the words
     val counts = words groupBy (w => w) mapValues (_.size)

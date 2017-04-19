@@ -1,7 +1,7 @@
 # InvIndex
 ## Spark application to create the inverted index of a group of files
 ### Author: Luis Miguel Mejía Suárez (BalmungSan)
-### Versión: 1.1.0 (17/04/2017)
+### Versión: 1.1.1 (19/04/2017)
 
 Spark Application to compute the inverted index of a bunch of files in HDFS and saves the results in a mongo collection
 
