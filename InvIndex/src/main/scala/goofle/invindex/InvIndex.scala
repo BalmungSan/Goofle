@@ -30,7 +30,7 @@ import com.mongodb.spark.MongoSpark
  * the word appeared in that document
  *
  * @author Luis Miguel Mejía Suárez (BalmungSan) 
- * @version 1.0.0
+ * @version 1.1.1
  */
 object InvIndex {
   /** Count all words in a text
@@ -39,9 +39,21 @@ object InvIndex {
    * @note this method runs in parallel 
    */
   private def countWords(text: String): Seq[(String, Int)] = {
+    //creates the set of stop words
+    import scala.io.Source
+    val englishStopWordsStream = getClass.getResourceAsStream("/english-stop-words")
+    val spanishStopWordsStream = getClass.getResourceAsStream("/spanish-stop-words")
+    val englishStopWordsSource = Source.fromInputStream(englishStopWordsStream)
+    val spanishStopWordsSource = Source.fromInputStream(spanishStopWordsStream)
+    val englishStopWordsSet = englishStopWordsSource.mkString.split(",").toSet
+    val spanishStopWordsSet = spanishStopWordsSource.mkString.split(",").toSet
+    val stopWords = englishStopWordsSet | spanishStopWordsSet
+    englishStopWordsSource.close()
+    spanishStopWordsSource.close()
+
     //checks if a word is valid
     def isValidWord(word: String): Boolean = {
-      word != ""
+      word != "" && !stopWords(word)
     }
 
     //returns the inflected form of a word
@@ -74,12 +86,13 @@ object InvIndex {
     //gets all words in the text in parallel
     val words = for {
       w <- text.split("[^A-Za-z]").par //splits by every character that isn't a letter
-      if isValidWord(w)
-    } yield toInflectedForm(w)
+      word = toInflectedForm(w)
+      if isValidWord(word)
+    } yield word
 
     //counts the words
     val counts = words groupBy (w => w) mapValues (_.size)
-    counts.seq.toSeq
+    counts.toSeq.seq
   }
 
   /** ===Main method===
@@ -87,16 +100,16 @@ object InvIndex {
    * @param args command line arguments
    */
   def main(args: Array[String]): Unit = {
-    //start the application
+    //starts the application
     val spark = SparkSession.builder()
       .appName("InvertedIndex")
       .getOrCreate()
     val sc = spark.sparkContext
 
-    //open all files specified in the first argument	
+    //opens all files specified in the first argument	
     val files = sc.wholeTextFiles(args(0))
 
-    //create an inverted index for those files
+    //creates an inverted index for those files
     val wordsPerFile = files map {
       case (file, text) =>
         (file.substring(file.lastIndexOf("/", file.lastIndexOf("/") - 1)),
@@ -106,7 +119,7 @@ object InvIndex {
       case(file, words) => words map { case (word, count) => (word, (file, count)) }
     } groupByKey() map { case(word, files) => (word, files.toSeq.sortWith(_._2 > _._2)) }
 
-    //save the inverted in mongo using the property 'spark.mongodb.output.uri'
+    //saves the inverted in mongo using the property 'spark.mongodb.output.uri'
     val mongoRDD = filesPerWord map { case (word, values) =>
       val files = for {
         (name, count) <- values
@@ -115,7 +128,7 @@ object InvIndex {
     } map { new org.bson.Document(_) }
     MongoSpark.save(mongoRDD)
  
-    //stop the application
+    //stops the application
     sc.stop()
   }
 }
