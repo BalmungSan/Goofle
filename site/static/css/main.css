@@ -5,3 +5,12 @@
   margin: 0 auto;
   display: block;
 }
+
+.wrapper{
+  text-align: center;
+}
+
+#buttonSearch{
+  margin: 0 auto;
+  display: table;
+}
