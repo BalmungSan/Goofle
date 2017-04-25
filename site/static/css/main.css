@@ -6,11 +6,12 @@
   display: block;
 }
 
-.wrapper{
+#buttonSearch{
+  left: 50%;
   text-align: center;
 }
 
-#buttonSearch{
-  margin: 0 auto;
-  display: table;
+#footNote{
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
 }

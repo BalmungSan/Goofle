@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="{{url_for('static', filename= 'css/bootstrap.min.css')}}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <style>
         body {
             padding-top: 50px;
@@ -20,6 +21,7 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/searchbar.css')}}">
 
     <script src="{{url_for('static', filename='js/vendor/modernizr-2.8.3-respond-1.4.2.min.js')}}"></script>
+    <script type="text/javascript" language="javascript" src="{{url_for('static',filename='js/main.js')}}"></script>
 </head>
 
 <body>
@@ -30,31 +32,56 @@
             <img src="{{url_for('static',filename='img/goofle.png')}}" alt="gooflelogo" id="goofleLogo">
         </div>
 
-        <div class="row">
-          <div class="col-md-3"></div>
-          <div class="col-md-6">
-            <input type="text" name="search" placeholder="Search...">
+        {% block content %}
+        <form method="post" id="searchform" name="searchform" enctype="multipart/form-data" action="/result">
+
+          {{ form.csrf }}
+
+          <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+              <h3>Search: </h3>
+              <!--<input type="text" id="txtWord" name="searchtxt" placeholder="Search..." >-->
+              {{ form.text }}
+            </div>
+            <div class="col-md-3"></div>
           </div>
-          <div class="col-md-3"></div>
+
+          <br>
+
+          <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-3">
+              <h3>Number of results:</h3>
+              <!--<input type="text" name="searchnum" placeholder="# Result..." id="numResults">-->
+                {{ form.top }}
+            </div>
+
+            <div class="col-md-3 text-center">
+              <br>
+              <button class="btn btn-success" type="submit" id="buttonSearch">Search for words</button>
+            </div>
+            <div class="col-md-3"></div>
+          </div>
+
         </div>
 
-        <div class="row">
-          <div class="col-md-3"></div>
-          <div class="col-md-6">
-            <input type="text" name="search" placeholder="# Result..." id="inputNumResults">
-          </div>
-          <div class="col-md-3"></div>
-        </div>
+        </form>
 
-        <div class="row">
+        {% endblock %}
+
+        <hr>
+        <div class="footer">
           <div class="col-md-4"></div>
           <div class="col-md-4">
+            <h5>Disclaimer: Done for educational purposes, no copywright infringement intended</h5>
             <br>
-            <div class="wrapper">
-              <button class="btn btn-success" type="button" name="searchButton" id="buttonSearch">Search for words</button>
-            </div>
+            <h5>Luis Miguel Mejía Suarez, Sergio Lasso, Pedro Calle</h5>
+            <h6>Universidad Eafit, Medellín Colombia</h6>
+            <h6>2017</h6>
           </div>
           <div class="col-md-4"></div>
+
         </div>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -63,8 +90,6 @@
         </script>
 
         <script src="{{url_for('static',filename='js/vendor/bootstrap.min.js')}}"></script>
-
-        <script src="{{url_for('static',filename='js/main.js')}}"></script>
 </body>
 
 </html>

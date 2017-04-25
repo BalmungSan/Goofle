@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Query Results</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="{{url_for('static', filename= 'css/bootstrap.min.css')}}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 50px;
+            padding-bottom: 20px;
+        }
+    </style>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap-theme.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/result.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/searchbar.css')}}">
+
+    <script src="{{url_for('static', filename='js/vendor/modernizr-2.8.3-respond-1.4.2.min.js')}}"></script>
+
+
+    <script>
+      document.onload =
+      function changeLabel(){
+          var label = document.getElementById("label") = localStorage.getItem(txt);
+          console.log(txt);
+      }
+    </script>
+
+  </head>
+
+
+  <body>
+    <div class="row">
+      <div class="container" id="containerTitle">
+        <h1 id="label">Top Results: </h1>
+        <ol class="custom-counter">
+          {% for file,count in results %}
+          <li>
+            {{ count }} - <a href="http://10.131.137.188{{ file }}" target="_blank"> {{ file }} </a>
+          </li>
+          {% endfor %}
+        </ol>
+      </div>
+    </div>
+  </body>
+</html>
