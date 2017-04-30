@@ -53,4 +53,4 @@ Either these are installed in the cluster in a path where Spark can load them or
 ### Notes
 - Spanish and english [stop words](https://en.wikipedia.org/wiki/Stop_words) are ignored.
 - **For the moment:** the _inflected_ form of a word means, all characters in lowercase and all diacritic vowel are mapped to its normal form. _e.g. Á => a_
-	+ **Future work:** Compute and save the [word stem] (https://en.wikipedia.org/wiki/Word_stem) of each word.
+	+ **Future work:** Compute and save the [word stem](https://en.wikipedia.org/wiki/Word_stem) of each word.

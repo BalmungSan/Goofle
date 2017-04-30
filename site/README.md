@@ -5,13 +5,13 @@
 - Pedro Calle Jaramillo
 - Sergio Alejandro Lasso
 
-#### Dependencies
+### Dependencies
 - [python 3](https://www.python.org/) and [pip](https://pip.pypa.io/en/stable/installing/)
 - [Flask](http://flask.pocoo.org/). _install_ ```pip3 install flask```
 - [WTForms](https://wtforms.readthedocs.io/en/latest/). _install_ ```pip3 install WTForms```
 - [PyMongo](https://api.mongodb.com/python/current/). _install_ ```pip3 install pymongo```
 
-#### How to use
+### Usage
 ##### Configure
 Edit the file _settings.py_ to configure the application
 
@@ -34,16 +34,16 @@ class Config(object):
 
 **Where:**
 
-- **APP_HOST:** It is the ip on which the application will run, it must be a valid ip in the network interfaces of the machine. _e.g. "localhost"_
+- **APP_HOST:** It is the ip on which the application will run. _e.g. "localhost"_
 - **APP_PORT:** It is the port on which the application will run. _e.g. 8080_
 - **MONGO_HOST:** It is the ip on which mongo is listening.  _e.g. "localhost"_
 - **MONGO_PORT:** It is the port on which mongo is listening.  _e.g. 27017_
 - **MONGO_DB_NAME:** It is the name of the database to connect.  _e.g. "default"_
 - **MONGO_COLLECTION_NAME:** It is the name of the collection to use.  _e.g. "inv_index"_
 - **MONGO_DB_USER:** It is the username with which the application will authenticate in the database. _e.g. "user1"_
-- **MONGO_DB_PWD:** It is the password of the username with which the application will authenticate in the database. _e.g. "1234"_
+- **MONGO_DB_PWD:** It is the password of the user with which the application will authenticate in the database. _e.g. "1234"_
 
 #### run
-run the following command to start running the application in background
+Run the following command to start running the application in background
 
     $ nohup python3 run.py &
