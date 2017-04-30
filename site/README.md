@@ -43,7 +43,7 @@ class Config(object):
 - **MONGO_DB_USER:** It is the username with which the application will authenticate in the database. _e.g. "user1"_
 - **MONGO_DB_PWD:** It is the password of the user with which the application will authenticate in the database. _e.g. "1234"_
 
-#### run
+#### Run
 Run the following command to start running the application in background
 
     $ nohup python3 run.py &
