@@ -41,7 +41,7 @@
         <ol class="custom-counter">
           {% for file,count in results %}
           <li>
-            {{ count }} - <a href="http://10.131.137.188{{ file }}" target="_blank"> {{ file }} </a>
+            {{ count }} - <a href="http://{{ ip }}{{ file }}" target="_blank"> {{ file }} </a>
           </li>
           {% endfor %}
         </ol>

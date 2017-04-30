@@ -1,6 +1,7 @@
-# InvIndex
-Inverted Index Algorithm in [Apache Spark](http://spark.apache.org/)
-And an web application for searching in the dataset.
+# Goofle
+Inverted Index Algorithm in Apache Spark
+
+And a web application for searching in the dataset.
 
 ## Authors
 - Pedro Calle Jaramillo
@@ -10,5 +11,5 @@ And an web application for searching in the dataset.
 Universidad EAFIT - 2017 (Tópicos Especiales en Telemática)
 
 ## Repository Structure
-- **InvIndex:** [sbt](http://www.scala-sbt.org/) project to build the Spark application.
-- **site:** Web Application in Python and [Flask](http://flask.pocoo.org/).
+- **InvIndex:** [sbt](http://www.scala-sbt.org/) project to build the [Spark] (http://spark.apache.org/) application.
+- **site:** Web Application in [Python](https://www.python.org/) and [Flask](http://flask.pocoo.org/).

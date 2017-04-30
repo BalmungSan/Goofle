@@ -32,7 +32,7 @@ def result():
     words = form.text.data.split(" ")
     top = form.top.data
     results = my_searcher.search(words, top)
-    return render_template("result.html", results=results)
+    return render_template("result.html", results=results, ip=Config.APP_HOST)
   else:
     return redirect("/")
 

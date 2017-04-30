@@ -1,5 +1,4 @@
-﻿import pymongo
-from pymongo import MongoClient
+﻿from pymongo import MongoClient
 from collections import defaultdict
 
 class Searcher:
