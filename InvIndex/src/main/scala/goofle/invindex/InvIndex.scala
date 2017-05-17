@@ -36,7 +36,6 @@ object InvIndex {
   /** Count all words in a text
    * @param text the text to analyse
    * @return a [[scala.collection.Seq Seq]] of tuples (word, count)
-   * @note this method runs in parallel 
    */
   private def countWords(text: String): Seq[(String, Int)] = {
     //creates the set of stop words
@@ -83,16 +82,16 @@ object InvIndex {
       }
     }
 
-    //gets all words in the text in parallel
+    //gets all words in the text
     val words = for {
-      w <- text.split("[^A-Za-z]").par //splits by every character that isn't a letter
+      w <- text.split("[^A-Za-z]") //splits by every character that isn't a letter
       word = toInflectedForm(w)
       if isValidWord(word)
     } yield word
 
     //counts the words
     val counts = words groupBy (w => w) mapValues (_.size)
-    counts.toSeq.seq
+    counts.toSeq
   }
 
   /** ===Main method===
@@ -112,8 +111,8 @@ object InvIndex {
     //creates an inverted index for those files
     val wordsPerFile = files map {
       case (file, text) =>
-        (file.substring(file.lastIndexOf("/", file.lastIndexOf("/") - 1)),
-         countWords(text.replace("-", "")))
+        (file.substring(file.lastIndexOf("/") + 1),
+         countWords(text))
     }
     val filesPerWord = wordsPerFile flatMap {
       case(file, words) => words map { case (word, count) => (word, (file, count)) }

@@ -1,7 +1,7 @@
 # InvIndex
 ## Spark application to create the inverted index of a group of files
 ### Author: Luis Miguel Mejía Suárez (BalmungSan)
-### Versión: 1.1.1 (19/04/2017)
+### Versión: 1.1.2 (17/05/2017)
 
 Spark Application to compute the inverted index of a bunch of files in HDFS and saves the results in a mongo collection
 
@@ -30,13 +30,13 @@ Run
     $ spark-submit --master yarn --deploy-mode cluster \
       --conf "spark.mongodb.output.uri=[mongo uri]" \
       --class "goofle.invindex.InvIndex" \
-      target/scala-2.11/invindex_2.11-1.1.0.jar \
+      target/scala-2.11/invindex_2.11-1.1.2.jar \
       [path]
 
 **Where:**
 
 - **mongo uri:** Is the URI to the mongo collection where the computed index will be saved _e.g. mongodb://localhost/db.collection_
-- **path:** Is the route to the files to compute the inverted index _e.g. /datasets/gutenberg/*_
+- **path:** Is the route to the files to compute the inverted index _e.g. /datasets/gutenberg_
 
 ### Dependencies
 These application depend on the [Mongo Spark Connector](https://github.com/mongodb/mongo-spark) and the [Mongo Scala Connector](https://docs.mongodb.com/spark-connector/master/scala-api/). Spark need to have access to these binaries.
@@ -48,7 +48,7 @@ Either these are installed in the cluster in a path where Spark can load them or
 
 - **Mongo Scala:** For load from an online repository add the following line to the run command. _before the application jar_.
 
-	```--packages org.mongodb.spark:mongo-spark-connector_2.11:2.0.0```
+	```--packages org.mongodb.scala:mongo-scala-driver_2.11:2.0.0```
 
 ### Notes
 - Spanish and english [stop words](https://en.wikipedia.org/wiki/Stop_words) are ignored.
