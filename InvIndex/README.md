@@ -1,7 +1,7 @@
 # InvIndex
 ## Spark application to create the inverted index of a group of files
 ### Author: Luis Miguel Mejía Suárez (BalmungSan)
-### Versión: 1.1.2 (17/05/2017)
+### Versión: 1.1.3 (23/05/2017)
 
 Spark Application to compute the inverted index of a bunch of files in HDFS and saves the results in a mongo collection
 
@@ -23,14 +23,14 @@ in the form _'/folder/file'_
 ### Usage
 Compile
 
-    $ sbt package doc
+    $ sbt package
 
 Run
 
     $ spark-submit --master yarn --deploy-mode cluster \
       --conf "spark.mongodb.output.uri=[mongo uri]" \
       --class "goofle.invindex.InvIndex" \
-      target/scala-2.11/invindex_2.11-1.1.2.jar \
+      target/scala-2.11/invindex_2.11-1.1.3.jar \
       [path]
 
 **Where:**

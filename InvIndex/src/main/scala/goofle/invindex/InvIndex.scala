@@ -35,21 +35,10 @@ import com.mongodb.spark.MongoSpark
 object InvIndex {
   /** Count all words in a text
    * @param text the text to analyse
+   * @param stopWords a [[scala.collection.Set Set]] with the words to ignore
    * @return a [[scala.collection.Seq Seq]] of tuples (word, count)
    */
-  private def countWords(text: String): Seq[(String, Int)] = {
-    //creates the set of stop words
-    import scala.io.Source
-    val englishStopWordsStream = getClass.getResourceAsStream("/english-stop-words")
-    val spanishStopWordsStream = getClass.getResourceAsStream("/spanish-stop-words")
-    val englishStopWordsSource = Source.fromInputStream(englishStopWordsStream)
-    val spanishStopWordsSource = Source.fromInputStream(spanishStopWordsStream)
-    val englishStopWordsSet = englishStopWordsSource.mkString.split(",").toSet
-    val spanishStopWordsSet = spanishStopWordsSource.mkString.split(",").toSet
-    val stopWords = englishStopWordsSet | spanishStopWordsSet
-    englishStopWordsSource.close()
-    spanishStopWordsSource.close()
-
+  private def countWords(text: String, stopWords: Set[String]): Seq[(String, Int)] = {
     //checks if a word is valid
     def isValidWord(word: String): Boolean = {
       word != "" && !stopWords(word)
@@ -84,7 +73,7 @@ object InvIndex {
 
     //gets all words in the text
     val words = for {
-      w <- text.split("[^A-Za-z]") //splits by every character that isn't a letter
+      w <- text.split("\\P{L}") //splits by every character that isn't a letter
       word = toInflectedForm(w)
       if isValidWord(word)
     } yield word
@@ -105,6 +94,18 @@ object InvIndex {
       .getOrCreate()
     val sc = spark.sparkContext
 
+    //creates the set of stop words
+    import scala.io.Source
+    val englishStopWordsStream = getClass.getResourceAsStream("/english-stop-words")
+    val spanishStopWordsStream = getClass.getResourceAsStream("/spanish-stop-words")
+    val englishStopWordsSource = Source.fromInputStream(englishStopWordsStream)
+    val spanishStopWordsSource = Source.fromInputStream(spanishStopWordsStream)
+    val englishStopWordsSet = englishStopWordsSource.mkString.split(",").toSet
+    val spanishStopWordsSet = spanishStopWordsSource.mkString.split(",").toSet
+    val stopWords = sc.broadcast(englishStopWordsSet | spanishStopWordsSet)
+    englishStopWordsSource.close()
+    spanishStopWordsSource.close()
+
     //opens all files specified in the first argument	
     val files = sc.wholeTextFiles(args(0))
 
@@ -112,7 +113,7 @@ object InvIndex {
     val wordsPerFile = files map {
       case (file, text) =>
         (file.substring(file.lastIndexOf("/") + 1),
-         countWords(text))
+         countWords(text, stopWords.value))
     }
     val filesPerWord = wordsPerFile flatMap {
       case(file, words) => words map { case (word, count) => (word, (file, count)) }
